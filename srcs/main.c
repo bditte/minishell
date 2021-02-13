@@ -6,7 +6,7 @@
 /*   By: bditte <bditte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 10:33:06 by bditte            #+#    #+#             */
-/*   Updated: 2021/02/12 17:04:43 by bditte           ###   ########.fr       */
+/*   Updated: 2021/02/13 16:17:43 by bditte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,10 @@ void	free_everything(t_lexer *lexer, int exit_code)
 		exit(1);
 }
 
-int main(void)
+int	main(void)
 {
 	t_lexer	l;
+
 	while (1)
 	{
 		print_prompt();
@@ -33,6 +34,5 @@ int main(void)
 			free_everything(&l, 1);
 		else
 			free_everything(&l, 0);
-		
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: bditte <bditte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 10:45:14 by bditte            #+#    #+#             */
-/*   Updated: 2021/02/12 17:08:32 by bditte           ###   ########.fr       */
+/*   Updated: 2021/02/13 16:16:39 by bditte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@
 # include "get_next_line.h"
 
 # include <stdio.h>
+# include <errno.h>
+# define INPUT_EXIT	-1
 
-#define INPUT_EXIT	-1
-
-typedef	struct	s_simple_cmd
+typedef struct s_simple_cmd
 {
 	int			nb_of_tokens;
 	int			outfile;
@@ -29,13 +29,13 @@ typedef	struct	s_simple_cmd
 	char		**tokens;
 }				t_simple_cmd;
 
-typedef	struct	s_cmds
+typedef struct s_cmds
 {
 	int				nb_of_cmds;
 	t_simple_cmd	cmds;
 }				t_cmds;
 
-typedef	struct	s_token
+typedef struct s_token
 {
 	char	*value;
 	int		type;
@@ -45,13 +45,13 @@ typedef	struct	s_token
 **	LEXER
 */
 
-#define BUF_SIZE	32
+# define BUF_SIZE	32
 
-typedef	struct s_lexer
+typedef struct s_lexer
 {
-	t_list	*tokens_lst;
 	char	**tokens;
 	char	*buffer;
+	char	*line;
 	int		position;
 	int		buffsize;
 	int		quoted;
@@ -65,6 +65,9 @@ int				is_operator(char *token, char next_char);
 int				is_first_operator(char c);
 int				ft_isquote(int c);
 int				token_recognition(t_lexer *l, char next_char);
+void			reset_lexer_struct(t_lexer *lexer);
+void			join_char(t_lexer *lexer, char c);
+void			handle_quote(t_lexer *lexer, char *line, int i);
 /*
 **	TOKEN
 */
@@ -85,12 +88,12 @@ void			add_new_token(t_lexer *l);
 **	ERROR
 */
 
-void			print_error_and_exit();
+void			print_error_and_exit(void);
 
 /*
 **	UTILS
 */
 
-void			print_prompt();
+void			print_prompt(void);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: bditte <bditte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/25 11:33:36 by bditte            #+#    #+#             */
-/*   Updated: 2021/02/12 00:51:18 by bditte           ###   ########.fr       */
+/*   Updated: 2021/02/13 16:12:32 by bditte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	verify(char **str, int ret)
 	}
 }
 
-int		get_next_line(int fd, char **line)
+int	get_next_line(int fd, char **line)
 {
 	char		*str[256];
 	char		*buffer;
@@ -39,8 +39,6 @@ int		get_next_line(int fd, char **line)
 	char		c;
 
 	if (!line || BUFFER_SIZE <= 0 || (read(fd, &c, 0) == -1)
-	/*	|| (!str[fd] && (!(str[fd] = malloc(1))
-		|| (*str[fd] = 0)))*/
 		|| !(buffer = malloc(BUFFER_SIZE + 1)))
 		return (-1);
 	str[fd] = malloc(1);

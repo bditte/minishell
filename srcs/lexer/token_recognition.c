@@ -6,16 +6,16 @@
 /*   By: bditte <bditte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 17:06:56 by bditte            #+#    #+#             */
-/*   Updated: 2021/02/13 15:10:13 by bditte           ###   ########.fr       */
+/*   Updated: 2021/02/13 16:10:42 by bditte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		token_recognition(t_lexer *l, char next_char)
+int	token_recognition(t_lexer *l, char next_char)
 {
 	int	len;
-	
+
 	len = ft_strlen(l->buffer);
 	if (!next_char)
 		return (1);

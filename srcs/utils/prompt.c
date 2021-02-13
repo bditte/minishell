@@ -6,13 +6,13 @@
 /*   By: bditte <bditte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 10:38:58 by bditte            #+#    #+#             */
-/*   Updated: 2021/02/03 11:12:46 by bditte           ###   ########.fr       */
+/*   Updated: 2021/02/13 16:15:05 by bditte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	print_prompt()
+void	print_prompt(void)
 {
 	ft_putstr("minishell$ ");
 }

@@ -6,14 +6,14 @@
 /*   By: bditte <bditte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/25 12:19:14 by bditte            #+#    #+#             */
-/*   Updated: 2021/02/12 00:54:49 by bditte           ###   ########.fr       */
+/*   Updated: 2021/02/13 16:14:49 by bditte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include "minishell.h"
 
-int		ft_strcut(char **str)
+int	ft_strcut(char **str)
 {
 	int		i;
 	int		j;
@@ -25,7 +25,8 @@ int		ft_strcut(char **str)
 		i++;
 	while ((*str)[i + j])
 		j++;
-	if (!(res = malloc(sizeof(char) * j + 1)))
+	res = malloc(sizeof(char) * j + 1);
+	if (!res)
 		return (-1);
 	res[j] = 0;
 	while (j--)
@@ -44,20 +45,20 @@ char	*ft_newline(char *str)
 	i = 0;
 	while (str[i] != '\n' && str[i] != 0)
 		i++;
-	if (!(tmp = malloc(sizeof(char) * i + 1)))
+	tmp = malloc(sizeof(char) * i + 1);
+	if (!tmp)
 		return (NULL);
 	tmp[i] = 0;
 	i = 0;
 	while (str[i] != '\n' && str[i])
 		*(tmp++) = str[i++];
-	//*(tmp) = '\0';
 	tmp -= i;
 	return (tmp);
 }
 
 size_t	ft_strlen_gnl(char *src)
 {
-	size_t len;
+	size_t	len;
 
 	len = 0;
 	while (src[len] && src[len] != 0)
@@ -73,7 +74,8 @@ char	*ft_strjoin_gnl(char **s1, char *s2)
 
 	s1len = 0;
 	s2len = 0;
-	if (!(dst = malloc(sizeof(char) * (ft_strlen(*s1) + ft_strlen(s2) + 1))))
+	dst = malloc(sizeof(char) * (ft_strlen(*s1) + ft_strlen(s2) + 1));
+	if (!dst)
 		return (NULL);
 	while ((*s1)[s1len])
 	{
@@ -90,9 +92,9 @@ char	*ft_strjoin_gnl(char **s1, char *s2)
 	return (dst - s1len - s2len);
 }
 
-int		ft_strchr_gnl(char *str, char c)
+int	ft_strchr_gnl(char *str, char c)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!str)
