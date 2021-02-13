@@ -6,7 +6,7 @@
 /*   By: bditte <bditte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 10:45:14 by bditte            #+#    #+#             */
-/*   Updated: 2021/02/13 16:16:39 by bditte           ###   ########.fr       */
+/*   Updated: 2021/02/13 16:58:55 by bditte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,9 @@ int				ft_isquote(int c);
 int				token_recognition(t_lexer *l, char next_char);
 void			reset_lexer_struct(t_lexer *lexer);
 void			join_char(t_lexer *lexer, char c);
-void			handle_quote(t_lexer *lexer, char *line, int i);
+void			get_nb_tokens(t_lexer *lexer, char *line);
+void			reset_lexer_struct(t_lexer *lexer);
+void			init_lexer_struct(t_lexer *lexer);
 /*
 **	TOKEN
 */

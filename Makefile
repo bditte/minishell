@@ -6,7 +6,7 @@ SRC =			main.c \
 				lexer/is_operator.c \
 				lexer/is_quote.c \
 				lexer/is_builtin.c \
-				lexer/join_char.c \
+				lexer/lexer_utils.c \
 				lexer/token_recognition.c \
 				token/create_token.c \
 				token/destroy_token.c \

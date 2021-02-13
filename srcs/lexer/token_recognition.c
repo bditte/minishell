@@ -6,11 +6,28 @@
 /*   By: bditte <bditte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 17:06:56 by bditte            #+#    #+#             */
-/*   Updated: 2021/02/13 16:10:42 by bditte           ###   ########.fr       */
+/*   Updated: 2021/02/13 17:02:34 by bditte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	handle_quote(t_lexer *l, char next_char, int len)
+{
+	if (ft_isquote(next_char) && !l->quoted)
+		return (1);
+	if (ft_isquote(l->buffer[len - 1]))
+	{
+		if (!l->quoted)
+			l->quoted = l->buffer[len - 1];
+		else if (l->quoted == l->buffer[len - 1])
+		{
+			l->quoted = 0;
+			return (1);
+		}
+	}
+	return (1);
+}
 
 int	token_recognition(t_lexer *l, char next_char)
 {
@@ -18,6 +35,8 @@ int	token_recognition(t_lexer *l, char next_char)
 
 	len = ft_strlen(l->buffer);
 	if (!next_char)
+		return (1);
+	if (handle_quote(l, next_char, len))
 		return (1);
 	if (!l->quoted)
 	{
@@ -28,6 +47,8 @@ int	token_recognition(t_lexer *l, char next_char)
 		if (is_operator(l->buffer, next_char))
 			return (1);
 		if (ft_isspace(next_char))
+			return (1);
+		if (ft_isquote(next_char))
 			return (1);
 	}
 	if (l->buffer[len - 1] == '\\' && !l->quoted)
