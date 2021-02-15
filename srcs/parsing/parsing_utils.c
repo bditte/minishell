@@ -1,38 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bditte <bditte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/03 10:33:06 by bditte            #+#    #+#             */
-/*   Updated: 2021/02/15 12:36:01 by bditte           ###   ########.fr       */
+/*   Created: 2021/02/15 11:55:02 by bditte            #+#    #+#             */
+/*   Updated: 2021/02/15 12:02:08 by bditte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_lexer(t_lexer *lexer, int exit_code)
+int	insert_arg(t_simple_cmd *cmd, char *arg)
 {
-	if (!lexer->nb_tokens)
-		exit(1);
-	while (--lexer->nb_tokens >= 0)
-		free(lexer->tokens[lexer->nb_tokens]);
-	free(lexer->tokens);
-	if (exit_code)
-		exit(1);
+	if (cmd->nb_available_args < cmd->nb_args)
+	{
+		cmd->args[cmd->nb_args - 1] = arg;
+		cmd->nb_args++;
+		return (1);
+	}
+	return (0);
 }
 
-int	main(void)
+int	insert_cmd(t_cmd *cmd, t_simple_cmd *s_cmd)
 {
-	t_lexer		l;
-	t_parser	p;
-	while (1)
+	if (cmd->nb_available_cmds < cmd->nb_cmds)
 	{
-		print_prompt();
-		if (lexer(&l) == INPUT_EXIT)
-			free_lexer(&l, 1);
-		parsing(&l, &p);
-		
+		cmd->simple_cmds[cmd->nb_cmds - 1] = s_cmd;
+		cmd->nb_cmds++;
+		return (1);
 	}
+	return (0);
 }

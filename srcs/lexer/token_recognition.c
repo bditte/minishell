@@ -6,7 +6,7 @@
 /*   By: bditte <bditte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 17:06:56 by bditte            #+#    #+#             */
-/*   Updated: 2021/02/13 17:02:34 by bditte           ###   ########.fr       */
+/*   Updated: 2021/02/15 12:33:02 by bditte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	handle_quote(t_lexer *l, char next_char, int len)
 			return (1);
 		}
 	}
-	return (1);
+	return (0);
 }
 
 int	token_recognition(t_lexer *l, char next_char)
@@ -51,6 +51,7 @@ int	token_recognition(t_lexer *l, char next_char)
 		if (ft_isquote(next_char))
 			return (1);
 	}
+
 	if (l->buffer[len - 1] == '\\' && !l->quoted)
 	{
 		l->buffer[len - 1] = next_char;

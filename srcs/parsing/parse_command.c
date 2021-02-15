@@ -1,38 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   parse_command.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bditte <bditte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/03 10:33:06 by bditte            #+#    #+#             */
-/*   Updated: 2021/02/15 12:36:01 by bditte           ###   ########.fr       */
+/*   Created: 2021/02/15 12:54:49 by bditte            #+#    #+#             */
+/*   Updated: 2021/02/15 12:58:38 by bditte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_lexer(t_lexer *lexer, int exit_code)
+void	parse_command(t_parser *p, t_lexer *l)
 {
-	if (!lexer->nb_tokens)
-		exit(1);
-	while (--lexer->nb_tokens >= 0)
-		free(lexer->tokens[lexer->nb_tokens]);
-	free(lexer->tokens);
-	if (exit_code)
-		exit(1);
-}
+	t_cmd	*cmd;
+	int		i;
 
-int	main(void)
-{
-	t_lexer		l;
-	t_parser	p;
-	while (1)
+	init_cmd();
+	i = -1;
+	while (++i < cmd->nb_cmds)
 	{
-		print_prompt();
-		if (lexer(&l) == INPUT_EXIT)
-			free_lexer(&l, 1);
-		parsing(&l, &p);
-		
+		parse_simple_command();
 	}
 }

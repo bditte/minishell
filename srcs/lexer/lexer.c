@@ -6,7 +6,7 @@
 /*   By: bditte <bditte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 11:13:38 by bditte            #+#    #+#             */
-/*   Updated: 2021/02/13 17:01:15 by bditte           ###   ########.fr       */
+/*   Updated: 2021/02/15 12:21:58 by bditte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	lexer(t_lexer *lexer)
 	}
 	free(lexer->buffer);
 	free(lexer->line);
-//	for (int i = 0; i < lexer->nb_tokens; i++)
-//		printf("token %d :|%s|\n", i, lexer->tokens[i]);
+	for (int i = 0; i < lexer->nb_tokens; i++)
+		printf("token %d :|%s|\n", i, lexer->tokens[i]);
 	return (0);
 }

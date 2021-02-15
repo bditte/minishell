@@ -6,7 +6,7 @@
 /*   By: bditte <bditte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 10:45:14 by bditte            #+#    #+#             */
-/*   Updated: 2021/02/13 16:58:55 by bditte           ###   ########.fr       */
+/*   Updated: 2021/02/15 12:19:29 by bditte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,30 +22,20 @@
 
 typedef struct s_simple_cmd
 {
-	int			nb_of_tokens;
-	int			outfile;
-	int			infile;
-	int			errfile;
-	char		**tokens;
+	int			nb_args;
+	int			nb_available_args;
+	char		**args;
 }				t_simple_cmd;
 
-typedef struct s_cmds
+typedef struct s_cmd
 {
-	int				nb_of_cmds;
-	t_simple_cmd	cmds;
-}				t_cmds;
-
-typedef struct s_token
-{
-	char	*value;
-	int		type;
-}				t_token;
-
-/*
-**	LEXER
-*/
-
-# define BUF_SIZE	32
+	int				nb_cmds;
+	int				nb_available_cmds;
+	int				outfile;
+	int				infile;
+	int				errfile;
+	t_simple_cmd	**simple_cmds;
+}				t_cmd;
 
 typedef struct s_lexer
 {
@@ -59,6 +49,35 @@ typedef struct s_lexer
 	int		current_token;
 }				t_lexer;
 
+
+typedef struct s_token
+{
+	char	*value;
+	int		type;
+}				t_token;
+
+/*
+**	PARSING
+*/
+
+typedef struct s_parser
+{
+	t_cmd	**cmds;
+	int		nb_cmds;
+	
+}				t_parser;
+
+int				parsing(t_lexer *l, t_parser *p);
+int				insert_cmd(t_cmd *cmd, t_simple_cmd *s_cmd);
+int				insert_arg(t_simple_cmd *cmd, char *arg);
+
+/*
+**	LEXER
+*/
+
+# define BUF_SIZE	32
+
+
 int				lexer(t_lexer *lexer);
 int				is_builtin(char *token, char next_char);
 int				is_operator(char *token, char next_char);
@@ -70,6 +89,7 @@ void			join_char(t_lexer *lexer, char c);
 void			get_nb_tokens(t_lexer *lexer, char *line);
 void			reset_lexer_struct(t_lexer *lexer);
 void			init_lexer_struct(t_lexer *lexer);
+
 /*
 **	TOKEN
 */
