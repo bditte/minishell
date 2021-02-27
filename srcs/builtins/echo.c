@@ -1,30 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bditte <bditte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/04 14:12:56 by bditte            #+#    #+#             */
-/*   Updated: 2021/02/24 15:50:33 by bditte           ###   ########.fr       */
+/*   Created: 2021/02/24 15:20:20 by bditte            #+#    #+#             */
+/*   Updated: 2021/02/24 15:32:21 by bditte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	print_error_and_exit(void)
+int	bash_echo(char **av)
 {
-	printf("minishell: %s\n", strerror(errno));
-	exit(0);
-}
+	int	flag;
+	int	i;
 
-void	builtin_error(char *str)
-{
-	printf("minishell: %s\n", str);
-	exit(0);
-}
-
-void	builtin_strerror(char *builtin)
-{
-	printf("minishell: %s: %s\n,", builtin, strerror(errno));	
+	if (!av[1])
+	{
+		printf("\n");
+		return (0);	
+	}
+	if (!ft_strcmp(av[1], "-n") && !av[2])
+		return (0);
+	flag = !ft_strcmp(av[1], "-n");
+	i = 0 + flag;
+	while (av[++i])
+		printf("%s ", av[i]);
+	if (!flag)
+		printf("\n");
+	return (0);
 }

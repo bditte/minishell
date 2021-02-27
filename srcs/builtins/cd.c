@@ -1,30 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bditte <bditte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/04 14:12:56 by bditte            #+#    #+#             */
-/*   Updated: 2021/02/24 15:50:33 by bditte           ###   ########.fr       */
+/*   Created: 2021/02/24 15:36:26 by bditte            #+#    #+#             */
+/*   Updated: 2021/02/24 16:25:40 by bditte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	print_error_and_exit(void)
+int	bash_cd(char **av)
 {
-	printf("minishell: %s\n", strerror(errno));
-	exit(0);
-}
-
-void	builtin_error(char *str)
-{
-	printf("minishell: %s\n", str);
-	exit(0);
-}
-
-void	builtin_strerror(char *builtin)
-{
-	printf("minishell: %s: %s\n,", builtin, strerror(errno));	
+	if (av[2])
+	{
+		builtin_error("cd: too many arguments");
+		return (1);
+	}
+	if (chdir(av[1]) == -1)
+	{
+		builtin_strerror("cd");
+		return (1);
+	}
+	return (0);
 }

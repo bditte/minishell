@@ -6,7 +6,7 @@
 /*   By: bditte <bditte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 10:45:14 by bditte            #+#    #+#             */
-/*   Updated: 2021/02/15 12:19:29 by bditte           ###   ########.fr       */
+/*   Updated: 2021/02/24 16:43:59 by bditte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,20 @@ typedef struct s_simple_cmd
 	char		**args;
 }				t_simple_cmd;
 
+typedef	struct s_mini_parser
+{
+	int		curr_tkn;
+	int		first_tkn;
+	int		nb_tkns;
+	int		tkn_type;
+}				t_mini_parser;
+
+
 typedef struct s_cmd
 {
 	int				nb_cmds;
-	int				nb_available_cmds;
+	int				curr_cmd;
+	int				first_tkn;
 	int				outfile;
 	int				infile;
 	int				errfile;
@@ -47,6 +57,7 @@ typedef struct s_lexer
 	int		quoted;
 	int		nb_tokens;
 	int		current_token;
+	int		i;
 }				t_lexer;
 
 
@@ -64,13 +75,16 @@ typedef struct s_parser
 {
 	t_cmd	**cmds;
 	int		nb_cmds;
-	
+	int		curr_cmd;
+	int		first_tkn;
 }				t_parser;
 
-int				parsing(t_lexer *l, t_parser *p);
+int				parsing(t_parser *p, char **tokens);
+void			parse_command(t_parser *p, char **tokens);
+t_simple_cmd	*parse_simple_command(char **tokens, int first_tkn);
 int				insert_cmd(t_cmd *cmd, t_simple_cmd *s_cmd);
 int				insert_arg(t_simple_cmd *cmd, char *arg);
-
+int				get_first_token(char **tokens, int curr_cmd, char c);
 /*
 **	LEXER
 */
@@ -106,6 +120,14 @@ void			add_new_token(t_lexer *l);
 # define DGREAT		6
 # define LESS		7
 
+/*
+**	BUILTINS
+*/
+
+int				bash_cd(char **av);
+int				bash_echo(char **av);
+int				bash_pwd(char **av);
+int				bash_env(char **av, char **envp);
 /*
 **	ERROR
 */

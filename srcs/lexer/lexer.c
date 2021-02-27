@@ -6,7 +6,7 @@
 /*   By: bditte <bditte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 11:13:38 by bditte            #+#    #+#             */
-/*   Updated: 2021/02/15 12:21:58 by bditte           ###   ########.fr       */
+/*   Updated: 2021/02/16 15:30:58 by bditte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,6 @@
 
 int	lexer(t_lexer *lexer)
 {
-	int		i;
-
-	i = -1;
 	lexer->line = NULL;
 	if (get_next_line(STDIN_FILENO, &lexer->line) <= 0)
 		return (0);
@@ -27,12 +24,13 @@ int	lexer(t_lexer *lexer)
 		return (INPUT_EXIT);
 	}
 	get_nb_tokens(lexer, lexer->line);
-	while (lexer->line[++i])
+	lexer->i = -1;
+	while (lexer->line[++(lexer->i)])
 	{
-		if (ft_isspace(lexer->line[i]) && !lexer->quoted)
+		if (ft_isspace(lexer->line[lexer->i]) && !lexer->quoted)
 			continue ;
-		join_char(lexer, lexer->line[i]);
-		if (token_recognition(lexer, lexer->line[i + 1]))
+		join_char(lexer, lexer->line[lexer->i]);
+		if (token_recognition(lexer, lexer->line[lexer->i + 1]))
 			add_new_token(lexer);
 	}
 	free(lexer->buffer);

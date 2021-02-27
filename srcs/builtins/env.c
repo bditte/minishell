@@ -1,30 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bditte <bditte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/04 14:12:56 by bditte            #+#    #+#             */
-/*   Updated: 2021/02/24 15:50:33 by bditte           ###   ########.fr       */
+/*   Created: 2021/02/24 16:41:11 by bditte            #+#    #+#             */
+/*   Updated: 2021/02/24 16:45:54 by bditte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	print_error_and_exit(void)
+int	bash_env(char **av, char **envp)
 {
-	printf("minishell: %s\n", strerror(errno));
-	exit(0);
-}
+	int	i;
 
-void	builtin_error(char *str)
-{
-	printf("minishell: %s\n", str);
-	exit(0);
-}
-
-void	builtin_strerror(char *builtin)
-{
-	printf("minishell: %s: %s\n,", builtin, strerror(errno));	
+	if (av[1])
+	{
+		builtin_error("env: too many arguments");
+		return (1);
+	}
+	i = -1;
+	while (envp[++i])
+		printf("%s\n", envp[i]);
+	return (0);
 }

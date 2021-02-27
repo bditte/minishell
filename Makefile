@@ -9,6 +9,9 @@ SRC =			main.c \
 				lexer/lexer_utils.c \
 				lexer/token_recognition.c \
 				parsing/parsing.c	\
+				parsing/parsing_utils.c \
+				parsing/parse_command.c \
+				parsing/parse_simple_command.c \
 				token/create_token.c \
 				token/destroy_token.c \
 				token/add_new_token.c \
