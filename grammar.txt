@@ -1,0 +1,40 @@
+token  LESS   GREAT   DGREAT   PIPE    SEMICOLON   
+        <       >       >>      |       ;
+
+input               : complete_commands
+
+complete_commands   : complete_command SEMICOLON command
+                    | complete_command
+
+complete_command    : pipesequence
+
+pipesequence        : command     
+                    | command PIPE command
+
+command             : simple_command
+
+simple_command      : cmd_prefix    cmd_word    cmd_suffix
+                    | cmd_prefix    cmd_word
+                    | cmd_prefix
+                    | cmd_name      cmd_suffix
+                    | cmd_name
+
+cmd_name            : WORD #Si fist word : si contient pas '=' : si correspond reserved_word sinon word
+
+cmd_word            : WORD #Si est de la forme ...=... return ASSIGNEMENT_WORD sinon WORD(forme =...)
+
+cmd_prefix          :               io_redirect
+                    | cmd_prefix    io_redirect
+                    |               ASSIGNEMENT_WORD
+                    | cmd_prefix    ASSIGNEMENT_WORD
+                    
+cmd_suffix          :               io_redirect
+                    | cmd_suffix    io_redirect
+                    |               WORD
+                    | cmd_suffix    WORD
+
+io_redirect         : LESS  filename
+                    | GREAT filename
+                    | DGREAT filename
+
+filename            : WORD
