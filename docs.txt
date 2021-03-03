@@ -1,2 +1,24 @@
 http://www.gaudry.be/langages-analyse-syntaxique-ast.html
 https://ruslanspivak.com/lsbasi-part7/ 
+Liens
+Signaux :
+https://sgeos.github.io/unix/c/signals/2016/02/24/passing-values-to-c-signal-handlers.html
+Environnement :
+https://www.gnu.org/software/libc/manual/html_node/Program-Arguments.html
+https://www.gnu.org/software/libc/manual/html_node/Environment-Access.html
+Ref grammaire :
+https://pubs.opengroup.org/onlinepubs/9699919799.2018edition/utilities/V3_chap02.html
+Parsing :
+https://en.wikipedia.org/wiki/Recursive_descent_parser
+https://en.wikipedia.org/wiki/Tree_traversal
+https://ruslanspivak.com/lsbasi-part1/
+http://www.gaudry.be/langages-analyse-syntaxique-ast.html
+Structure :
+https://www.aosabook.org/en/bash.html
+Passing Values to C Signal Handlers
+Program Arguments (The GNU C Library)
+Program Arguments (The GNU C Library)
+Environment Access (The GNU C Library)
+Environment Access (The GNU C Library)
+Recursive descent parser
+In computer science, a recursive descent parser is a kind of top-down parser built from a set of mutually recursive procedures (or a non-recursive equivalent) where each such procedure implements one of the nonterminals of the grammar. Thus the structure of the resulting program closely mirrors that of the grammar it recognizes.A predictive pars...
