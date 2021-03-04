@@ -3,15 +3,13 @@ token  LESS   GREAT   DGREAT   PIPE    SEMICOLON
 
 input               : complete_commands
 
-complete_commands   : complete_command SEMICOLON command
+complete_commands   : complete_command SEMICOLON complete_command
                     | complete_command
 
 complete_command    : pipesequence
 
-pipesequence        : command     
-                    | command PIPE command
-
-command             : simple_command
+pipesequence        : simple_command     
+                    | simple_command PIPE simple_command
 
 simple_command      : cmd_prefix    cmd_word    cmd_suffix
                     | cmd_prefix    cmd_word
@@ -19,7 +17,7 @@ simple_command      : cmd_prefix    cmd_word    cmd_suffix
                     | cmd_name      cmd_suffix
                     | cmd_name
 
-cmd_name            : WORD #Si fist word : si contient pas '=' : si correspond reserved_word sinon word
+cmd_name            : WORD #Si first word : si contient pas '=' : si correspond reserved_word sinon word
 
 cmd_word            : WORD #Si est de la forme ...=... return ASSIGNEMENT_WORD sinon WORD(forme =...)
 

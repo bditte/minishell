@@ -71,6 +71,13 @@ typedef struct s_token
 **	PARSING
 */
 
+typedef	struct s_rdc
+{
+	char	**tokens;
+	int		i;
+}				t_rdc;
+
+
 typedef struct s_parser
 {
 	t_cmd	**cmds;
