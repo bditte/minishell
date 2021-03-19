@@ -6,7 +6,7 @@
 /*   By: bditte <bditte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 10:45:14 by bditte            #+#    #+#             */
-/*   Updated: 2021/02/24 16:43:59 by bditte           ###   ########.fr       */
+/*   Updated: 2021/03/19 16:42:24 by bditte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,53 @@ typedef struct s_token
 **	PARSING
 */
 
+# define CURR_TOKEN	rdc->tokens[rdc->i]
+# define LESS	"<"
+# define GREAT	">"
+# define DGREAT	">>"
+# define PIPE	"|"
+# define SEMICOLON	";"
+
+# define TMP_NODE				-1
+# define ROOT					0
+# define WORD					1
+# define IO_REDIRECT			2
+# define CMD_PREFIX				3
+# define CMD_NAME				4
+# define CMD_WORD				5
+# define CMD_ARGS				6
+# define SIMPLE_COMMAND			7
+# define TYPE_LESS				10
+# define TYPE_GREAT				11
+# define TYPE_DGREAT			12
+
+typedef	struct	s_ast_node
+{
+	int						type;
+	int						sub_type;
+	char					*data;
+	int						value;
+	struct s_ast_node		*parent;
+	struct s_ast_node		*left;
+	struct s_ast_node		*right;
+}				t_ast_node;
+
 typedef	struct s_rdc
 {
 	char	**tokens;
-	int		i;
+	int			i;
+	int			simple_i;
+	int			is_last_token;
+	int			nb_tokens;
+	t_ast_node	*root;
+	t_ast_node	*tmp_node;
 }				t_rdc;
+
+typedef	struct	s_node_info
+{
+	int			type;
+	
+}				t_node_info;
 
 
 typedef struct s_parser
@@ -86,12 +128,14 @@ typedef struct s_parser
 	int		first_tkn;
 }				t_parser;
 
-int				parsing(t_parser *p, char **tokens);
-void			parse_command(t_parser *p, char **tokens);
-t_simple_cmd	*parse_simple_command(char **tokens, int first_tkn);
-int				insert_cmd(t_cmd *cmd, t_simple_cmd *s_cmd);
-int				insert_arg(t_simple_cmd *cmd, char *arg);
-int				get_first_token(char **tokens, int curr_cmd, char c);
+int				parser(t_rdc *rdc, char ***tokens, int nb_tokens);
+void			init_parser(t_rdc *rdc, int nb_tokens);
+int				add_to_tmp(int type, t_rdc *rdc);
+void			display_tree(t_ast_node *root);
+void			update_tmp_node(int type, t_rdc *rdc);
+void			new_node(int type, t_rdc *rdc, t_ast_node **parent, t_ast_node **dest);
+
+t_ast_node	create_node(int type, t_rdc *rdc, t_ast_node *parent);
 /*
 **	LEXER
 */
@@ -119,14 +163,6 @@ t_token			create_token(char *value, int type);
 void			destroy_token(t_token token);
 void			add_new_token(t_lexer *l);
 
-# define WORD	1
-# define ASSIGNEMENT_WORD	2
-# define NAME		3
-# define IO_NUMBER	4
-# define GREAT		5
-# define DGREAT		6
-# define LESS		7
-
 /*
 **	BUILTINS
 */
@@ -135,6 +171,15 @@ int				bash_cd(char **av);
 int				bash_echo(char **av);
 int				bash_pwd(char **av);
 int				bash_env(char **av, char **envp);
+
+/*
+**	FREE
+*/
+
+void			free_parser(t_rdc *rdc);
+void			free_lexer(t_lexer *lexer, int exit_code);
+void			free_ast(t_ast_node *root);
+
 /*
 **	ERROR
 */

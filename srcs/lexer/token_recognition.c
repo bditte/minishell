@@ -6,7 +6,7 @@
 /*   By: bditte <bditte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 17:06:56 by bditte            #+#    #+#             */
-/*   Updated: 2021/02/16 15:33:58 by bditte           ###   ########.fr       */
+/*   Updated: 2021/03/15 15:36:39 by bditte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,11 @@ int	token_recognition(t_lexer *l, char next_char)
 		return (1);
 	if (!l->quoted)
 	{
+		if (ft_isspace(next_char))
+			return (1);
 		if (is_first_operator(next_char) && *l->buffer != '>')
 			return (1);
-		if (is_builtin(l->buffer, next_char))
-			return (1);
 		if (is_operator(l->buffer, next_char))
-			return (1);
-		if (ft_isspace(next_char))
 			return (1);
 		if (ft_isquote(next_char))
 			return (1);

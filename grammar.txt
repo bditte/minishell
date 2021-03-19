@@ -3,13 +3,11 @@ token  LESS   GREAT   DGREAT   PIPE    SEMICOLON
 
 input               : complete_commands
 
-complete_commands   : complete_command SEMICOLON complete_command
-                    | complete_command
-
-complete_command    : pipesequence
+complete_commands   : pipesequence SEMICOLON pipesequence
+                    | pipesequence
 
 pipesequence        : simple_command     
-                    | simple_command PIPE simple_command
+                    | pipesequence PIPE simple_command
 
 simple_command      : cmd_prefix    cmd_word    cmd_suffix
                     | cmd_prefix    cmd_word
@@ -23,8 +21,8 @@ cmd_word            : WORD #Si est de la forme ...=... return ASSIGNEMENT_WORD s
 
 cmd_prefix          :               io_redirect
                     | cmd_prefix    io_redirect
-                    |               ASSIGNEMENT_WORD
-                    | cmd_prefix    ASSIGNEMENT_WORD
+                //    |               ASSIGNEMENT_WORD
+                //    | cmd_prefix    ASSIGNEMENT_WORD
                     
 cmd_suffix          :               io_redirect
                     | cmd_suffix    io_redirect

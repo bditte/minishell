@@ -8,13 +8,15 @@ SRC =			main.c \
 				lexer/is_builtin.c \
 				lexer/lexer_utils.c \
 				lexer/token_recognition.c \
-				parsing/parsing.c	\
-				parsing/parsing_utils.c \
-				parsing/parse_command.c \
-				parsing/parse_simple_command.c \
+				parsing/parser.c \
+				parsing/parser_utils.c \
+				parsing/ast.c \
+				parsing/traverse_tree.c \
 				token/create_token.c \
 				token/destroy_token.c \
 				token/add_new_token.c \
+				free/free_structures.c \
+				free/free_ast.c \
 				error/error.c
 					
 NAME =			minishell

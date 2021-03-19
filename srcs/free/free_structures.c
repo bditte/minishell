@@ -1,32 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   free_structures.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bditte <bditte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/03 10:33:06 by bditte            #+#    #+#             */
-/*   Updated: 2021/03/19 16:43:20 by bditte           ###   ########.fr       */
+/*   Created: 2021/03/15 15:51:21 by bditte            #+#    #+#             */
+/*   Updated: 2021/03/19 16:44:11 by bditte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(void)
+void	free_lexer(t_lexer *lexer, int exit_code)
 {
-	t_lexer		l;
-	t_rdc		rdc;
-	//t_parser	p;
-
-	while (1)
+	if (!lexer->nb_tokens)
+		exit(1);
+	while (--lexer->nb_tokens >= 0)
 	{
-		print_prompt();
-		if (lexer(&l) == INPUT_EXIT)
-			free_lexer(&l, 1);
-		parser(&rdc, &(l.tokens), l.nb_tokens);
-		//parsing(&p, l.tokens);
-		free_parser(&rdc);
-		free_lexer(&l, 0);
-		
+		if (*lexer->tokens[lexer->nb_tokens])
+			free(lexer->tokens[lexer->nb_tokens]);
 	}
+	free(lexer->tokens);
+	if (exit_code)
+		exit(1);
+}
+
+void	free_parser(t_rdc *rdc)
+{
+	free_ast(rdc->root);
+	printf("AST FREED\n");
+/*	free(rdc->tokens);
+	free(rdc);*/
 }

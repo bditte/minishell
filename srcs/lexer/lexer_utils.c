@@ -6,7 +6,7 @@
 /*   By: bditte <bditte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/13 15:56:54 by bditte            #+#    #+#             */
-/*   Updated: 2021/02/13 17:00:04 by bditte           ###   ########.fr       */
+/*   Updated: 2021/03/18 14:54:22 by bditte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	join_char(t_lexer *lexer, char c)
 {
 	char	*tmp;
-
+	
 	if (lexer->position == lexer->buffsize - 1)
 	{
 		tmp = malloc(sizeof(char) * lexer->buffsize + BUF_SIZE);
@@ -62,14 +62,16 @@ void	get_nb_tokens(t_lexer *lexer, char *line)
 	init_lexer_struct(lexer);
 	while (line[++i])
 	{
+		if (ft_isspace(line[i]) && !lexer->quoted)
+			continue ;
 		join_char(lexer, line[i]);
 		if (token_recognition(lexer, line[i + 1]))
-		{
+		{	
 			lexer->nb_tokens++;
 			reset_lexer_struct(lexer);
 		}
 	}
-	lexer->tokens = malloc(sizeof(char *) * lexer->nb_tokens + 1);
+	lexer->tokens = malloc(sizeof(char *) * (lexer->nb_tokens + 1));
 	if (!lexer->tokens)
 		print_error_and_exit();
 	lexer->tokens[lexer->nb_tokens] = 0;
