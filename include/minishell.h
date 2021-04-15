@@ -6,7 +6,7 @@
 /*   By: bditte <bditte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 10:45:14 by bditte            #+#    #+#             */
-/*   Updated: 2021/03/19 16:42:24 by bditte           ###   ########.fr       */
+/*   Updated: 2021/04/15 11:46:38 by bditte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,34 +18,11 @@
 
 # include <stdio.h>
 # include <errno.h>
+# include <unistd.h>
+# include <wait.h>
+# include <fcntl.h>
+
 # define INPUT_EXIT	-1
-
-typedef struct s_simple_cmd
-{
-	int			nb_args;
-	int			nb_available_args;
-	char		**args;
-}				t_simple_cmd;
-
-typedef	struct s_mini_parser
-{
-	int		curr_tkn;
-	int		first_tkn;
-	int		nb_tkns;
-	int		tkn_type;
-}				t_mini_parser;
-
-
-typedef struct s_cmd
-{
-	int				nb_cmds;
-	int				curr_cmd;
-	int				first_tkn;
-	int				outfile;
-	int				infile;
-	int				errfile;
-	t_simple_cmd	**simple_cmds;
-}				t_cmd;
 
 typedef struct s_lexer
 {
@@ -60,13 +37,6 @@ typedef struct s_lexer
 	int		i;
 }				t_lexer;
 
-
-typedef struct s_token
-{
-	char	*value;
-	int		type;
-}				t_token;
-
 /*
 **	PARSING
 */
@@ -78,6 +48,10 @@ typedef struct s_token
 # define PIPE	"|"
 # define SEMICOLON	";"
 
+# define SIMPLE_COMMAND			-5
+# define PIPESEQUENCE			-4
+# define COMPLETE_COMMAND		-3
+# define CURR_ROOT				-2
 # define TMP_NODE				-1
 # define ROOT					0
 # define WORD					1
@@ -86,10 +60,12 @@ typedef struct s_token
 # define CMD_NAME				4
 # define CMD_WORD				5
 # define CMD_ARGS				6
-# define SIMPLE_COMMAND			7
+
 # define TYPE_LESS				10
 # define TYPE_GREAT				11
 # define TYPE_DGREAT			12
+# define LEFT					13
+# define RIGHT					14
 
 typedef	struct	s_ast_node
 {
@@ -102,6 +78,40 @@ typedef	struct	s_ast_node
 	struct s_ast_node		*right;
 }				t_ast_node;
 
+/*
+**	EXECUTOR
+*/
+
+typedef	struct	s_exec
+{
+	t_ast_node	curr_node;
+	char		**envp;
+	int			fdpipe[2];
+	int			fdout;
+	int			fdin;
+	int			tmpin;
+	int			tmpout;
+	int			outfile;
+	int			outype;
+	int			infile;
+	int			ret;
+}				t_exec;
+
+
+int			executor(t_ast_node *root, char **envp);
+int			is_builtin(char *token);
+int			exec_builtin(char *name, char **args);
+char		**get_cmd_args(t_ast_node *node);
+char		*add_path(char *cmd);
+int			reset_fd(t_exec *exec);
+int			init_fd(t_exec *exec, t_ast_node *node);
+int			get_redirections(t_exec	*exec, t_ast_node *node);
+int			check_redirections(t_ast_node *node, t_exec *exec);
+
+/*
+**	PARSER
+*/
+
 typedef	struct s_rdc
 {
 	char	**tokens;
@@ -111,31 +121,29 @@ typedef	struct s_rdc
 	int			nb_tokens;
 	t_ast_node	*root;
 	t_ast_node	*tmp_node;
+	t_ast_node	*curr_root;
 }				t_rdc;
 
-typedef	struct	s_node_info
-{
-	int			type;
-	
-}				t_node_info;
-
-
-typedef struct s_parser
-{
-	t_cmd	**cmds;
-	int		nb_cmds;
-	int		curr_cmd;
-	int		first_tkn;
-}				t_parser;
 
 int				parser(t_rdc *rdc, char ***tokens, int nb_tokens);
 void			init_parser(t_rdc *rdc, int nb_tokens);
 int				add_to_tmp(int type, t_rdc *rdc);
 void			display_tree(t_ast_node *root);
 void			update_tmp_node(int type, t_rdc *rdc);
-void			new_node(int type, t_rdc *rdc, t_ast_node **parent, t_ast_node **dest);
+void			new_left_node(int type, t_rdc *rdc, t_ast_node **p, t_ast_node **d);
+void			new_right_node(int type, t_rdc *rdc, t_ast_node **p, t_ast_node **d);
+void			new_right_child(int type, t_rdc *rdc, t_ast_node **p);
+void			new_left_child(int type, t_rdc *rdc, t_ast_node **p);
+t_ast_node		create_node(int type, t_rdc *rdc, t_ast_node *parent);
+int				get_next_token(t_rdc *rdc);
+void			assign_simple_command(t_rdc *rdc);
+void			assign_complete_command(t_rdc *rdc);
+int				cmd_prefix(t_rdc *rdc);
+int				cmd_suffix(t_rdc *rdc);
+int				cmd_name(t_rdc *rdc);
+int				cmd_word(t_rdc *rdc);
+int				io_redirect(t_rdc *rdc);
 
-t_ast_node	create_node(int type, t_rdc *rdc, t_ast_node *parent);
 /*
 **	LEXER
 */
@@ -144,7 +152,6 @@ t_ast_node	create_node(int type, t_rdc *rdc, t_ast_node *parent);
 
 
 int				lexer(t_lexer *lexer);
-int				is_builtin(char *token, char next_char);
 int				is_operator(char *token, char next_char);
 int				is_first_operator(char c);
 int				ft_isquote(int c);
@@ -159,8 +166,6 @@ void			init_lexer_struct(t_lexer *lexer);
 **	TOKEN
 */
 
-t_token			create_token(char *value, int type);
-void			destroy_token(t_token token);
 void			add_new_token(t_lexer *l);
 
 /*
@@ -171,25 +176,30 @@ int				bash_cd(char **av);
 int				bash_echo(char **av);
 int				bash_pwd(char **av);
 int				bash_env(char **av, char **envp);
+int				bash_exit(char **av);
 
 /*
 **	FREE
 */
 
-void			free_parser(t_rdc *rdc);
 void			free_lexer(t_lexer *lexer, int exit_code);
-void			free_ast(t_ast_node *root);
+void			free_ast(t_rdc *root);
+void			free_right_children(t_ast_node *node);
+void			free_left_children(t_ast_node *node);
+void			free_tab(char **args);
 
 /*
 **	ERROR
 */
 
 void			print_error_and_exit(void);
-
+void			builtin_error(char *str);
+void			builtin_strerror(char *builtin);
+int				print_errno(char *str);
 /*
 **	UTILS
 */
 
 void			print_prompt(void);
-
+int				ft_close(int fd);
 #endif
