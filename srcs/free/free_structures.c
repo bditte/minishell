@@ -6,7 +6,7 @@
 /*   By: bditte <bditte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 15:51:21 by bditte            #+#    #+#             */
-/*   Updated: 2021/03/19 16:44:11 by bditte           ###   ########.fr       */
+/*   Updated: 2021/04/03 14:46:32 by bditte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,4 @@ void	free_lexer(t_lexer *lexer, int exit_code)
 	free(lexer->tokens);
 	if (exit_code)
 		exit(1);
-}
-
-void	free_parser(t_rdc *rdc)
-{
-	free_ast(rdc->root);
-	printf("AST FREED\n");
-/*	free(rdc->tokens);
-	free(rdc);*/
 }

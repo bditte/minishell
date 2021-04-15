@@ -6,7 +6,7 @@
 /*   By: bditte <bditte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/24 15:20:20 by bditte            #+#    #+#             */
-/*   Updated: 2021/02/24 15:32:21 by bditte           ###   ########.fr       */
+/*   Updated: 2021/04/15 14:44:47 by bditte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,20 @@ int	bash_echo(char **av)
 
 	if (!av[1])
 	{
-		printf("\n");
+		ft_putstr("\n");
 		return (0);	
 	}
 	if (!ft_strcmp(av[1], "-n") && !av[2])
 		return (0);
 	flag = !ft_strcmp(av[1], "-n");
-	i = 0 + flag;
-	while (av[++i])
-		printf("%s ", av[i]);
+	i = 1 + flag;
+	while (av[i])
+	{
+		ft_putstr(av[i++]);
+		if (av[i])
+			ft_putstr(" ");
+	}
 	if (!flag)
-		printf("\n");
+		ft_putstr("\n");
 	return (0);
 }

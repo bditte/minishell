@@ -1,34 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   is_builtin.c                                       :+:      :+:    :+:   */
+/*   files.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bditte <bditte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/04 15:40:17 by bditte            #+#    #+#             */
-/*   Updated: 2021/02/13 16:08:36 by bditte           ###   ########.fr       */
+/*   Created: 2021/04/09 15:22:35 by bditte            #+#    #+#             */
+/*   Updated: 2021/04/14 14:37:49 by bditte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	is_builtin(char *token, char next_char)
+int	ft_close(int fd)
 {
-	if (!ft_isspace(next_char) && next_char != 0)
-		return (0);
-	if (!ft_strcmp(token, "echo"))
-		return (1);
-	if (!ft_strcmp(token, "cd"))
-		return (1);
-	if (!ft_strcmp(token, "pwd"))
-		return (1);
-	if (!ft_strcmp(token, "export"))
-		return (1);
-	if (!ft_strcmp(token, "unset"))
-		return (1);
-	if (!ft_strcmp(token, "exit"))
-		return (1);
-	if (!ft_strcmp(token, "env"))
-		return (1);
+	if (close(fd) < 0)
+		return (print_errno("close"));
 	return (0);
 }
