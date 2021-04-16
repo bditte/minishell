@@ -20,13 +20,12 @@ SRC =			main.c \
 				executor/pipe.c \
 				executor/redirection.c \
 				executor/check_redirections.c \
+				executor/exit_fork.c \
 				builtins/cd.c \
 				builtins/echo.c \
 				builtins/env.c \
 				builtins/exit.c \
 				builtins/pwd.c \
-				token/create_token.c \
-				token/destroy_token.c \
 				token/add_new_token.c \
 				free/free_structures.c \
 				free/free_ast.c \

@@ -6,7 +6,7 @@
 /*   By: bditte <bditte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/03 15:47:16 by bditte            #+#    #+#             */
-/*   Updated: 2021/04/09 14:58:09 by bditte           ###   ########.fr       */
+/*   Updated: 2021/04/15 18:35:47 by bditte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ int	parser(t_rdc *rdc, char ***tokens, int nb_tokens)
 	complete_commands(rdc);
 	free(rdc->curr_root);
 	free(rdc->tmp_node);
-	//display_tree(rdc->root);
+	/*display_tree(rdc->root);
+	exit(1);*/
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: bditte <bditte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 10:33:06 by bditte            #+#    #+#             */
-/*   Updated: 2021/04/09 15:00:35 by bditte           ###   ########.fr       */
+/*   Updated: 2021/04/16 10:34:36 by bditte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ int	main(int argc, char **argv, char **envp)
 			free_lexer(&l, 1);
 		}
 		parser(rdc, &(l.tokens), l.nb_tokens);
-		executor(rdc->root, envp);
-		free_ast(rdc);
 		free_lexer(&l, 0);
+		executor(rdc, envp);
+		free_ast(rdc);
 	}
 }

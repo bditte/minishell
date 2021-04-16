@@ -6,7 +6,7 @@
 /*   By: bditte <bditte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 15:40:17 by bditte            #+#    #+#             */
-/*   Updated: 2021/04/14 22:48:49 by bditte           ###   ########.fr       */
+/*   Updated: 2021/04/15 23:18:53 by bditte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,12 @@ int	is_builtin(char *token)
 	return (0);
 }
 
-int	exec_builtin(char *name, char **args)
+int	exec_builtin(t_exec *exec)
 {
-	if (!ft_strcmp(name, "echo"))
-		bash_echo(args);
+	if (!is_builtin(exec->args[0]))
+		return (1);
+	if (!ft_strcmp(exec->args[0], "echo"))
+		bash_echo(exec->args);
 /*	if (!ft_strcmp(name, "cd"))
 		bash_cd(args);
 	if (!ft_strcmp(name, "pwd"))
@@ -47,5 +49,6 @@ int	exec_builtin(char *name, char **args)
 		bash_exit(args);
 	if (!ft_strcmp(name, "env"))
 		bash_env(args);*/
+	free_tab(exec->args);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: bditte <bditte@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 10:45:14 by bditte            #+#    #+#             */
-/*   Updated: 2021/04/15 11:46:38 by bditte           ###   ########.fr       */
+/*   Updated: 2021/04/16 10:36:30 by bditte           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <unistd.h>
 # include <wait.h>
 # include <fcntl.h>
+# include <sys/stat.h>
 
 # define INPUT_EXIT	-1
 
@@ -78,39 +79,6 @@ typedef	struct	s_ast_node
 	struct s_ast_node		*right;
 }				t_ast_node;
 
-/*
-**	EXECUTOR
-*/
-
-typedef	struct	s_exec
-{
-	t_ast_node	curr_node;
-	char		**envp;
-	int			fdpipe[2];
-	int			fdout;
-	int			fdin;
-	int			tmpin;
-	int			tmpout;
-	int			outfile;
-	int			outype;
-	int			infile;
-	int			ret;
-}				t_exec;
-
-
-int			executor(t_ast_node *root, char **envp);
-int			is_builtin(char *token);
-int			exec_builtin(char *name, char **args);
-char		**get_cmd_args(t_ast_node *node);
-char		*add_path(char *cmd);
-int			reset_fd(t_exec *exec);
-int			init_fd(t_exec *exec, t_ast_node *node);
-int			get_redirections(t_exec	*exec, t_ast_node *node);
-int			check_redirections(t_ast_node *node, t_exec *exec);
-
-/*
-**	PARSER
-*/
 
 typedef	struct s_rdc
 {
@@ -124,6 +92,43 @@ typedef	struct s_rdc
 	t_ast_node	*curr_root;
 }				t_rdc;
 
+
+/*
+**	EXECUTOR
+*/
+
+typedef	struct	s_exec
+{
+	t_rdc		*rdc;
+	char		**envp;
+	char		**args;
+	char		*cmd;
+	int			fdpipe[2];
+	int			fdout;
+	int			fdin;
+	int			tmpin;
+	int			tmpout;
+	int			outfile;
+	int			outype;
+	int			infile;
+	int			ret;
+}				t_exec;
+
+
+int			executor(t_rdc *rdc, char **envp);
+int			is_builtin(char *token);
+int			exec_builtin(t_exec *exec);
+char		**get_cmd_args(t_ast_node *node);
+int 		is_cmd(char *cmd, char **buf);
+int			reset_fd(t_exec *exec);
+int			init_fd(t_exec *exec, t_ast_node *node);
+int			get_redirections(t_exec	*exec, t_ast_node *node);
+int			check_redirections(t_ast_node *node, t_exec *exec);
+void		exit_fork(t_exec *exec, t_rdc *rdc);
+
+/*
+**	PARSER
+*/
 
 int				parser(t_rdc *rdc, char ***tokens, int nb_tokens);
 void			init_parser(t_rdc *rdc, int nb_tokens);
@@ -187,6 +192,7 @@ void			free_ast(t_rdc *root);
 void			free_right_children(t_ast_node *node);
 void			free_left_children(t_ast_node *node);
 void			free_tab(char **args);
+void			free_completecommands(t_ast_node *node);
 
 /*
 **	ERROR
